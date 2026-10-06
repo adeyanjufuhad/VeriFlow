@@ -1,0 +1,155 @@
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+
+DESCRIPTOR: _descriptor.FileDescriptor
+
+class Ordering(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    ASCENDING: _ClassVar[Ordering]
+    DESCENDING: _ClassVar[Ordering]
+
+class FilesSortBy(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    FILES_SORT_BY_CREATED_AT: _ClassVar[FilesSortBy]
+    FILES_SORT_BY_FILENAME: _ClassVar[FilesSortBy]
+    FILES_SORT_BY_SIZE: _ClassVar[FilesSortBy]
+
+class DownloadFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    DOWNLOAD_FORMAT_UNKNOWN: _ClassVar[DownloadFormat]
+    DOWNLOAD_FORMAT_ORIGINAL: _ClassVar[DownloadFormat]
+    DOWNLOAD_FORMAT_TEXT: _ClassVar[DownloadFormat]
+ASCENDING: Ordering
+DESCENDING: Ordering
+FILES_SORT_BY_CREATED_AT: FilesSortBy
+FILES_SORT_BY_FILENAME: FilesSortBy
+FILES_SORT_BY_SIZE: FilesSortBy
+DOWNLOAD_FORMAT_UNKNOWN: DownloadFormat
+DOWNLOAD_FORMAT_ORIGINAL: DownloadFormat
+DOWNLOAD_FORMAT_TEXT: DownloadFormat
+
+class UploadFileInit(_message.Message):
+    __slots__ = ("name", "expires_after")
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AFTER_FIELD_NUMBER: _ClassVar[int]
+    name: str
+    expires_after: int
+    def __init__(self, name: _Optional[str] = ..., expires_after: _Optional[int] = ...) -> None: ...
+
+class UploadFileChunk(_message.Message):
+    __slots__ = ("init", "data")
+    INIT_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    init: UploadFileInit
+    data: bytes
+    def __init__(self, init: _Optional[_Union[UploadFileInit, _Mapping]] = ..., data: _Optional[bytes] = ...) -> None: ...
+
+class File(_message.Message):
+    __slots__ = ("size", "created_at", "expires_at", "filename", "id", "public_url", "public_url_expires_at")
+    SIZE_FIELD_NUMBER: _ClassVar[int]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    FILENAME_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    size: int
+    created_at: _timestamp_pb2.Timestamp
+    expires_at: _timestamp_pb2.Timestamp
+    filename: str
+    id: str
+    public_url: str
+    public_url_expires_at: _timestamp_pb2.Timestamp
+    def __init__(self, size: _Optional[int] = ..., created_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., expires_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., filename: _Optional[str] = ..., id: _Optional[str] = ..., public_url: _Optional[str] = ..., public_url_expires_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ListFilesRequest(_message.Message):
+    __slots__ = ("limit", "order", "pagination_token", "sort_by", "filter")
+    LIMIT_FIELD_NUMBER: _ClassVar[int]
+    ORDER_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    SORT_BY_FIELD_NUMBER: _ClassVar[int]
+    FILTER_FIELD_NUMBER: _ClassVar[int]
+    limit: int
+    order: Ordering
+    pagination_token: str
+    sort_by: FilesSortBy
+    filter: str
+    def __init__(self, limit: _Optional[int] = ..., order: _Optional[_Union[Ordering, str]] = ..., pagination_token: _Optional[str] = ..., sort_by: _Optional[_Union[FilesSortBy, str]] = ..., filter: _Optional[str] = ...) -> None: ...
+
+class ListFilesResponse(_message.Message):
+    __slots__ = ("data", "pagination_token")
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    data: _containers.RepeatedCompositeFieldContainer[File]
+    pagination_token: str
+    def __init__(self, data: _Optional[_Iterable[_Union[File, _Mapping]]] = ..., pagination_token: _Optional[str] = ...) -> None: ...
+
+class RetrieveFileRequest(_message.Message):
+    __slots__ = ("file_id",)
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    def __init__(self, file_id: _Optional[str] = ...) -> None: ...
+
+class DeleteFileRequest(_message.Message):
+    __slots__ = ("file_id",)
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    def __init__(self, file_id: _Optional[str] = ...) -> None: ...
+
+class DeleteFileResponse(_message.Message):
+    __slots__ = ("id", "deleted")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    DELETED_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    deleted: bool
+    def __init__(self, id: _Optional[str] = ..., deleted: bool = ...) -> None: ...
+
+class RetrieveFileContentRequest(_message.Message):
+    __slots__ = ("file_id", "format")
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    format: DownloadFormat
+    def __init__(self, file_id: _Optional[str] = ..., format: _Optional[_Union[DownloadFormat, str]] = ...) -> None: ...
+
+class FileContentChunk(_message.Message):
+    __slots__ = ("data",)
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    data: bytes
+    def __init__(self, data: _Optional[bytes] = ...) -> None: ...
+
+class CreatePublicUrlRequest(_message.Message):
+    __slots__ = ("file_id", "expires_after")
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AFTER_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    expires_after: int
+    def __init__(self, file_id: _Optional[str] = ..., expires_after: _Optional[int] = ...) -> None: ...
+
+class CreatePublicUrlResponse(_message.Message):
+    __slots__ = ("public_url", "expires_at")
+    PUBLIC_URL_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    public_url: str
+    expires_at: _timestamp_pb2.Timestamp
+    def __init__(self, public_url: _Optional[str] = ..., expires_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class RevokePublicUrlRequest(_message.Message):
+    __slots__ = ("file_id",)
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    def __init__(self, file_id: _Optional[str] = ...) -> None: ...
+
+class RevokePublicUrlResponse(_message.Message):
+    __slots__ = ("file_id", "revoked", "public_url")
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    REVOKED_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    revoked: bool
+    public_url: str
+    def __init__(self, file_id: _Optional[str] = ..., revoked: bool = ..., public_url: _Optional[str] = ...) -> None: ...
