@@ -1,0 +1,174 @@
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from . import usage_pb2 as _usage_pb2
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import message as _message
+from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+
+DESCRIPTOR: _descriptor.FileDescriptor
+
+class ImageDetail(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    DETAIL_INVALID: _ClassVar[ImageDetail]
+    DETAIL_AUTO: _ClassVar[ImageDetail]
+    DETAIL_LOW: _ClassVar[ImageDetail]
+    DETAIL_HIGH: _ClassVar[ImageDetail]
+
+class ImageFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    IMG_FORMAT_INVALID: _ClassVar[ImageFormat]
+    IMG_FORMAT_BASE64: _ClassVar[ImageFormat]
+    IMG_FORMAT_URL: _ClassVar[ImageFormat]
+
+class ImageQuality(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    IMG_QUALITY_INVALID: _ClassVar[ImageQuality]
+    IMG_QUALITY_LOW: _ClassVar[ImageQuality]
+    IMG_QUALITY_MEDIUM: _ClassVar[ImageQuality]
+    IMG_QUALITY_HIGH: _ClassVar[ImageQuality]
+
+class ImageAspectRatio(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    IMG_ASPECT_RATIO_INVALID: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_1_1: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_3_4: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_4_3: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_9_16: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_16_9: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_2_3: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_3_2: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_AUTO: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_9_19_5: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_19_5_9: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_9_20: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_20_9: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_1_2: _ClassVar[ImageAspectRatio]
+    IMG_ASPECT_RATIO_2_1: _ClassVar[ImageAspectRatio]
+
+class ImageResolution(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    IMG_RESOLUTION_INVALID: _ClassVar[ImageResolution]
+    IMG_RESOLUTION_1K: _ClassVar[ImageResolution]
+    IMG_RESOLUTION_2K: _ClassVar[ImageResolution]
+DETAIL_INVALID: ImageDetail
+DETAIL_AUTO: ImageDetail
+DETAIL_LOW: ImageDetail
+DETAIL_HIGH: ImageDetail
+IMG_FORMAT_INVALID: ImageFormat
+IMG_FORMAT_BASE64: ImageFormat
+IMG_FORMAT_URL: ImageFormat
+IMG_QUALITY_INVALID: ImageQuality
+IMG_QUALITY_LOW: ImageQuality
+IMG_QUALITY_MEDIUM: ImageQuality
+IMG_QUALITY_HIGH: ImageQuality
+IMG_ASPECT_RATIO_INVALID: ImageAspectRatio
+IMG_ASPECT_RATIO_1_1: ImageAspectRatio
+IMG_ASPECT_RATIO_3_4: ImageAspectRatio
+IMG_ASPECT_RATIO_4_3: ImageAspectRatio
+IMG_ASPECT_RATIO_9_16: ImageAspectRatio
+IMG_ASPECT_RATIO_16_9: ImageAspectRatio
+IMG_ASPECT_RATIO_2_3: ImageAspectRatio
+IMG_ASPECT_RATIO_3_2: ImageAspectRatio
+IMG_ASPECT_RATIO_AUTO: ImageAspectRatio
+IMG_ASPECT_RATIO_9_19_5: ImageAspectRatio
+IMG_ASPECT_RATIO_19_5_9: ImageAspectRatio
+IMG_ASPECT_RATIO_9_20: ImageAspectRatio
+IMG_ASPECT_RATIO_20_9: ImageAspectRatio
+IMG_ASPECT_RATIO_1_2: ImageAspectRatio
+IMG_ASPECT_RATIO_2_1: ImageAspectRatio
+IMG_RESOLUTION_INVALID: ImageResolution
+IMG_RESOLUTION_1K: ImageResolution
+IMG_RESOLUTION_2K: ImageResolution
+
+class GenerateImageRequest(_message.Message):
+    __slots__ = ("prompt", "image", "model", "n", "user", "format", "quality", "aspect_ratio", "resolution", "images", "storage_options")
+    PROMPT_FIELD_NUMBER: _ClassVar[int]
+    IMAGE_FIELD_NUMBER: _ClassVar[int]
+    MODEL_FIELD_NUMBER: _ClassVar[int]
+    N_FIELD_NUMBER: _ClassVar[int]
+    USER_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    QUALITY_FIELD_NUMBER: _ClassVar[int]
+    ASPECT_RATIO_FIELD_NUMBER: _ClassVar[int]
+    RESOLUTION_FIELD_NUMBER: _ClassVar[int]
+    IMAGES_FIELD_NUMBER: _ClassVar[int]
+    STORAGE_OPTIONS_FIELD_NUMBER: _ClassVar[int]
+    prompt: str
+    image: ImageUrlContent
+    model: str
+    n: int
+    user: str
+    format: ImageFormat
+    quality: ImageQuality
+    aspect_ratio: ImageAspectRatio
+    resolution: ImageResolution
+    images: _containers.RepeatedCompositeFieldContainer[ImageUrlContent]
+    storage_options: StorageOptions
+    def __init__(self, prompt: _Optional[str] = ..., image: _Optional[_Union[ImageUrlContent, _Mapping]] = ..., model: _Optional[str] = ..., n: _Optional[int] = ..., user: _Optional[str] = ..., format: _Optional[_Union[ImageFormat, str]] = ..., quality: _Optional[_Union[ImageQuality, str]] = ..., aspect_ratio: _Optional[_Union[ImageAspectRatio, str]] = ..., resolution: _Optional[_Union[ImageResolution, str]] = ..., images: _Optional[_Iterable[_Union[ImageUrlContent, _Mapping]]] = ..., storage_options: _Optional[_Union[StorageOptions, _Mapping]] = ...) -> None: ...
+
+class StorageOptions(_message.Message):
+    __slots__ = ("filename", "expires_after", "public_url")
+    FILENAME_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AFTER_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_FIELD_NUMBER: _ClassVar[int]
+    filename: str
+    expires_after: int
+    public_url: PublicUrlOptions
+    def __init__(self, filename: _Optional[str] = ..., expires_after: _Optional[int] = ..., public_url: _Optional[_Union[PublicUrlOptions, _Mapping]] = ...) -> None: ...
+
+class PublicUrlOptions(_message.Message):
+    __slots__ = ("expires_after",)
+    EXPIRES_AFTER_FIELD_NUMBER: _ClassVar[int]
+    expires_after: int
+    def __init__(self, expires_after: _Optional[int] = ...) -> None: ...
+
+class FileOutput(_message.Message):
+    __slots__ = ("file_id", "filename", "public_url", "public_url_expires_at", "expires_at", "public_url_error")
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    FILENAME_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_URL_ERROR_FIELD_NUMBER: _ClassVar[int]
+    file_id: str
+    filename: str
+    public_url: str
+    public_url_expires_at: _timestamp_pb2.Timestamp
+    expires_at: _timestamp_pb2.Timestamp
+    public_url_error: str
+    def __init__(self, file_id: _Optional[str] = ..., filename: _Optional[str] = ..., public_url: _Optional[str] = ..., public_url_expires_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., expires_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., public_url_error: _Optional[str] = ...) -> None: ...
+
+class ImageResponse(_message.Message):
+    __slots__ = ("images", "model", "usage")
+    IMAGES_FIELD_NUMBER: _ClassVar[int]
+    MODEL_FIELD_NUMBER: _ClassVar[int]
+    USAGE_FIELD_NUMBER: _ClassVar[int]
+    images: _containers.RepeatedCompositeFieldContainer[GeneratedImage]
+    model: str
+    usage: _usage_pb2.SamplingUsage
+    def __init__(self, images: _Optional[_Iterable[_Union[GeneratedImage, _Mapping]]] = ..., model: _Optional[str] = ..., usage: _Optional[_Union[_usage_pb2.SamplingUsage, _Mapping]] = ...) -> None: ...
+
+class GeneratedImage(_message.Message):
+    __slots__ = ("base64", "url", "respect_moderation", "file_output", "storage_error")
+    BASE64_FIELD_NUMBER: _ClassVar[int]
+    URL_FIELD_NUMBER: _ClassVar[int]
+    RESPECT_MODERATION_FIELD_NUMBER: _ClassVar[int]
+    FILE_OUTPUT_FIELD_NUMBER: _ClassVar[int]
+    STORAGE_ERROR_FIELD_NUMBER: _ClassVar[int]
+    base64: str
+    url: str
+    respect_moderation: bool
+    file_output: FileOutput
+    storage_error: str
+    def __init__(self, base64: _Optional[str] = ..., url: _Optional[str] = ..., respect_moderation: bool = ..., file_output: _Optional[_Union[FileOutput, _Mapping]] = ..., storage_error: _Optional[str] = ...) -> None: ...
+
+class ImageUrlContent(_message.Message):
+    __slots__ = ("image_url", "file_id", "detail")
+    IMAGE_URL_FIELD_NUMBER: _ClassVar[int]
+    FILE_ID_FIELD_NUMBER: _ClassVar[int]
+    DETAIL_FIELD_NUMBER: _ClassVar[int]
+    image_url: str
+    file_id: str
+    detail: ImageDetail
+    def __init__(self, image_url: _Optional[str] = ..., file_id: _Optional[str] = ..., detail: _Optional[_Union[ImageDetail, str]] = ...) -> None: ...

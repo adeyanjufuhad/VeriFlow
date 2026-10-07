@@ -1,0 +1,61 @@
+from typing import Literal, TypeAlias, Union
+
+__all__ = ["AllModels", "ChatModel", "ImageGenerationModel", "VideoGenerationModel"]
+
+ChatModel: TypeAlias = Literal[
+    "grok-4",
+    "grok-4-0709",
+    "grok-4-latest",
+    "grok-4-1-fast",
+    "grok-4-1-fast-reasoning",
+    "grok-4-1-fast-reasoning-latest",
+    "grok-4-1-fast-non-reasoning",
+    "grok-4-1-fast-non-reasoning-latest",
+    "grok-4-fast",
+    "grok-4-fast-reasoning",
+    "grok-4-fast-reasoning-latest",
+    "grok-4-fast-non-reasoning",
+    "grok-4-fast-non-reasoning-latest",
+    "grok-4.20-0309-reasoning",
+    "grok-4.20",
+    "grok-4.20-0309",
+    "grok-4.20-reasoning-latest",
+    "grok-4.20-0309-non-reasoning",
+    "grok-4.20-non-reasoning",
+    "grok-4.20-non-reasoning-latest",
+    "grok-4.20-multi-agent",
+    "grok-4.20-multi-agent-0309",
+    "grok-4.20-multi-agent-latest",
+    "grok-4.3",
+    "grok-4.3-latest",
+    "grok-4.5",
+    "grok-4.5-latest",
+    "grok-4.6",
+    "grok-code-fast-1",
+    "grok-build-0.1",
+    "grok-3",
+    "grok-3-latest",
+    "grok-3-mini",
+    "grok-3-fast",
+    "grok-3-fast-latest",
+    "grok-3-mini-fast",
+    "grok-3-mini-fast-latest",
+]
+
+ImageGenerationModel: TypeAlias = Literal[
+    "grok-imagine-image",
+    "grok-imagine-image-2.0",
+    "grok-imagine-image-quality",
+]
+
+VideoGenerationModel: TypeAlias = Literal[
+    "grok-imagine-video",
+    "grok-imagine-video-1.5",
+]
+
+AllModels: TypeAlias = Union[
+    ChatModel,
+    ImageGenerationModel,
+    VideoGenerationModel,
+    str,
+]
