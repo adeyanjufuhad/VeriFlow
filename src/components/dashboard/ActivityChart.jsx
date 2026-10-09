@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   CartesianGrid,
   Legend,
@@ -38,9 +37,7 @@ function CurrencyTooltip({ active, payload, label }) {
 }
 
 export default function ActivityChart({ periods, onPeriodChange, selectedPeriod }) {
-  const [internalPeriod, setInternalPeriod] = useState('30d')
-  const activePeriod = selectedPeriod ?? internalPeriod
-  const handlePeriodChange = onPeriodChange ?? setInternalPeriod
+  const activePeriod = selectedPeriod
   const data = periods[activePeriod] ?? periods['30d']
 
   return (
@@ -58,7 +55,7 @@ export default function ActivityChart({ periods, onPeriodChange, selectedPeriod 
               key={period.id}
               type="button"
               aria-pressed={activePeriod === period.id}
-              onClick={() => handlePeriodChange(period.id)}
+              onClick={() => onPeriodChange(period.id)}
               className={`min-h-8 rounded px-2.5 text-[10px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C62828] ${
                 activePeriod === period.id
                   ? 'bg-white text-[#8E1B1B] shadow-sm'
@@ -73,7 +70,7 @@ export default function ActivityChart({ periods, onPeriodChange, selectedPeriod 
 
       <div className="mt-4 h-[260px] w-full" role="img" aria-label={`${activePeriod === '7d' ? '7-day' : activePeriod === '30d' ? '30-day' : '90-day'} chart comparing inflows, financing disbursements, and repayments`}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={periods[activePeriod] ?? periods['30d']} margin={{ top: 8, right: 8, left: 6, bottom: 4 }}>
+          <LineChart data={data} margin={{ top: 8, right: 8, left: 6, bottom: 4 }}>
             <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="label"

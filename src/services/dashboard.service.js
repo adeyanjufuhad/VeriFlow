@@ -6,6 +6,7 @@ import {
 import { illustrativeInsight, sampleNotifications } from '../data/insights.js'
 import { riskAlerts } from '../data/riskAlerts.js'
 import { transactions } from '../data/transactions.js'
+import { formatCurrency } from '../utils/formatCurrency.js'
 
 export function getDashboardSummary() {
   return dashboardSummary
@@ -28,7 +29,10 @@ export function getDashboardRiskAlerts(limit = 4) {
 }
 
 export function getIllustrativeInsight() {
-  return illustrativeInsight
+  return {
+    ...illustrativeInsight,
+    evidence: `The illustrative sample records ${formatCurrency(dashboardSummary.verifiedInflows)} in verified inflows over the last 30 days, compared with ${formatCurrency(dashboardSummary.previousPeriodVerifiedInflows)} in the preceding 30-day period. Review source transactions and repayment performance before drawing conclusions.`,
+  }
 }
 
 export function getSampleNotifications() {
