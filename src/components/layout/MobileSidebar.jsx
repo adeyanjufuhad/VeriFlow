@@ -7,12 +7,35 @@ export default function MobileSidebar({ open, onClose }) {
   useEffect(() => {
     if (!open) return undefined
 
+    const previouslyFocused = document.activeElement
+    const dialog = document.querySelector('[aria-label="Mobile navigation"]')
+    dialog?.querySelector('button[aria-label="Close navigation"]')?.focus()
+
     function handleKeyDown(event) {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') {
+        onClose()
+        return
+      }
+
+      if (event.key !== 'Tab' || !dialog) return
+      const focusableElements = dialog.querySelectorAll('a[href], button:not([disabled])')
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement?.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement?.focus()
+      }
     }
 
     document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      previouslyFocused?.focus?.()
+    }
   }, [open, onClose])
 
   if (!open) return null

@@ -1,8 +1,12 @@
-const nairaFormatter = new Intl.NumberFormat('en-NG', {
-  style: 'currency',
-  currency: 'NGN',
-})
+export function formatCurrency(amount, options = {}) {
+  const formatter = new Intl.NumberFormat('en-NG', {
+    style: 'currency',
+    currency: 'NGN',
+    maximumFractionDigits: 0,
+    ...options,
+  })
 
-export default function formatCurrency(amount) {
-  return nairaFormatter.format(amount)
+  return formatter.format(amount)
 }
+
+export default formatCurrency

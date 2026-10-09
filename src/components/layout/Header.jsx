@@ -1,43 +1,8 @@
 import { Bell, ChevronDown, Menu, Search, Settings, UserRound, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { customers } from '../../data/customers.js'
-import { sampleNotifications } from '../../data/insights.js'
-import { transactions } from '../../data/transactions.js'
-import { formatDateTime } from '../../utils/formatDate.js'
-
-function searchIllustrativeRecords(query) {
-  const normalizedQuery = query.trim().toLowerCase()
-  if (!normalizedQuery) return []
-
-  const customerMatches = customers
-    .filter((customer) =>
-      `${customer.name} ${customer.sector} ${customer.location} ${customer.id}`
-        .toLowerCase()
-        .includes(normalizedQuery),
-    )
-    .map((customer) => ({
-      id: customer.id,
-      title: customer.name,
-      detail: `${customer.sector} · ${customer.location}`,
-      to: `/customers/${customer.id}`,
-    }))
-
-  const transactionMatches = transactions
-    .filter((transaction) =>
-      `${transaction.reference} ${transaction.business} ${transaction.type} ${transaction.id}`
-        .toLowerCase()
-        .includes(normalizedQuery),
-    )
-    .map((transaction) => ({
-      id: transaction.id,
-      title: transaction.reference,
-      detail: `${transaction.business} · ${transaction.type}`,
-      to: `/transactions/${transaction.id}`,
-    }))
-
-  return [...customerMatches, ...transactionMatches].slice(0, 6)
-}
+import { getSampleNotifications } from '../../services/dashboard.service.js'
+import { searchIllustrativeRecords } from '../../services/search.service.js'
 
 function Panel({ children, className = '' }) {
   return (
@@ -51,11 +16,12 @@ export default function Header({ title, description, onOpenNavigation }) {
   const [query, setQuery] = useState('')
   const [activePanel, setActivePanel] = useState(null)
   const searchResults = useMemo(() => searchIllustrativeRecords(query), [query])
+  const notifications = getSampleNotifications()
   const searchOpen = query.trim().length > 0 && activePanel === 'search'
 
   return (
     <header className="sticky top-0 z-20 border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
-      <div className="flex min-h-[76px] items-center gap-3 px-4 sm:px-6 lg:gap-6 lg:px-8">
+      <div className="flex min-h-[76px] flex-wrap items-center gap-3 px-4 py-3 sm:flex-nowrap sm:px-6 sm:py-0 lg:gap-6 lg:px-8">
         <button
           type="button"
           onClick={onOpenNavigation}
@@ -109,7 +75,7 @@ export default function Header({ title, description, onOpenNavigation }) {
             )}
           </div>
           {searchOpen && (
-            <Panel className="left-0 right-auto" >
+            <Panel className="left-0 right-auto">
               <div id="global-search-results" aria-live="polite">
                 <p className="px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#6B7280]">
                   Illustrative records
@@ -159,7 +125,7 @@ export default function Header({ title, description, onOpenNavigation }) {
                   <span className="text-[10px] text-[#6B7280]">Illustrative</span>
                 </div>
                 <ul>
-                  {sampleNotifications.map((notification) => (
+                  {notifications.map((notification) => (
                     <li key={notification.id}>
                       <Link
                         to={notification.to}

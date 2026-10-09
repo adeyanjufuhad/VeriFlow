@@ -4,6 +4,7 @@ export const illustrativeInsight = {
   evidence:
     'The sample shows higher recorded inflows over the most recent reporting period. Review the underlying transaction records alongside repayment performance before drawing conclusions.',
   transactionIds: ['txn-20261009-001', 'txn-20261007-002'],
+  transactionReferences: ['VF-20261009-001', 'VF-20261007-002'],
   label: 'Illustrative AI-assisted observation',
 }
 

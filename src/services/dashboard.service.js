@@ -3,7 +3,7 @@ import {
   dashboardSummary,
   portfolioHealth,
 } from '../data/dashboard.js'
-import { illustrativeInsight } from '../data/insights.js'
+import { illustrativeInsight, sampleNotifications } from '../data/insights.js'
 import { riskAlerts } from '../data/riskAlerts.js'
 import { transactions } from '../data/transactions.js'
 
@@ -29,4 +29,8 @@ export function getDashboardRiskAlerts(limit = 4) {
 
 export function getIllustrativeInsight() {
   return illustrativeInsight
+}
+
+export function getSampleNotifications() {
+  return sampleNotifications
 }

@@ -10,9 +10,10 @@ const activityLastSevenDays = [
 ]
 
 const activityLastThirtyDays = [
-  { label: 'Sep 12–18', inflows: 18.4, disbursements: 2.0, repayments: 2.3 },
-  { label: 'Sep 19–25', inflows: 20.1, disbursements: 2.2, repayments: 2.5 },
-  { label: 'Sep 26–Oct 02', inflows: 21.8, disbursements: 2.0, repayments: 2.6 },
+  { label: 'Sep 10–16', inflows: 17.0, disbursements: 2.1, repayments: 2.2 },
+  { label: 'Sep 17–23', inflows: 18.5, disbursements: 2.0, repayments: 2.4 },
+  { label: 'Sep 24–30', inflows: 20.8, disbursements: 2.1, repayments: 2.5 },
+  { label: 'Oct 01–02', inflows: 4.0, disbursements: 0.4, repayments: 0.3 },
   { label: 'Oct 03–09', inflows: 24.3, disbursements: 2.0, repayments: 3.1 },
 ]
 
@@ -28,7 +29,7 @@ export const activityByPeriod = {
     { label: 'Aug 16–22', inflows: 16.1, disbursements: 2.0, repayments: 2.0 },
     { label: 'Aug 23–29', inflows: 16.9, disbursements: 1.7, repayments: 2.1 },
     { label: 'Aug 30–Sep 05', inflows: 17.3, disbursements: 1.9, repayments: 2.2 },
-    { label: 'Sep 06–12', inflows: 18.0, disbursements: 2.1, repayments: 2.2 },
+    { label: 'Sep 06–09', inflows: 8.8, disbursements: 0.9, repayments: 1.1 },
     ...activityLastThirtyDays,
   ],
 }
