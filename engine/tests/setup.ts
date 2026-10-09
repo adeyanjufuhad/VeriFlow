@@ -5,6 +5,17 @@ import { closeDb, getDb } from '../db/client';
 import { sql } from 'drizzle-orm';
 
 const TEMPLATE_DB = 'veriflow_template';
+// Deterministic provider + tokens for every test file (never real secrets).
+Object.assign(process.env, {
+  PAYMENT_PROVIDER: 'mock',
+  MOCK_WEBHOOK_SECRET: 'test-webhook-secret',
+  DEMO_ADMIN_TOKEN: 'test-demo-token',
+  STAFF_API_TOKEN: 'test-staff-token',
+  BOT_API_TOKEN: 'test-bot-token',
+  OUTBOX_WEBHOOK_URL: '',
+  PAYSTACK_SECRET_KEY: '',
+});
+
 let dbName: string | undefined;
 
 function adminUrl(): string {

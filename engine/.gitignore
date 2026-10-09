@@ -7,3 +7,5 @@ coverage/
 *.tsbuildinfo
 next-env.d.ts
 .tmp/
+.pgdata/
+.dev-db.log

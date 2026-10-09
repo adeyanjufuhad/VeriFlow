@@ -2,6 +2,8 @@ import { randomInt } from 'node:crypto';
 import { expect } from 'vitest';
 import { getDb } from '../db/client';
 import { creditLines, traders } from '../db/schema';
+import { createTrader } from '../lib/money/traders';
+import { eq } from 'drizzle-orm';
 import { createTraderAccounts, getSystemAccountId, postEntry, type TraderAccountIds } from '../lib/ledger';
 
 export type TestTrader = { id: string; accounts: TraderAccountIds };
@@ -64,4 +66,22 @@ export async function expectPgError(promise: Promise<unknown>, pattern: RegExp) 
   const messages: string[] = [];
   for (let e: unknown = err; e instanceof Error; e = (e as { cause?: unknown }).cause) messages.push(e.message);
   expect(messages.join(' | ')).toMatch(pattern);
+}
+
+/** A real trader (mock provider virtual account, accounts, credit line) with an optional limit / loan. */
+export async function newTrader(opts: { limitKobo?: bigint; sweepRateBps?: number; loanKobo?: bigint } = {}) {
+  const trader = await createTrader({ name: 'Mama Ngozi', phone: `+23481${String(randomInt(10_000_000, 99_999_999))}` });
+  const db = getDb();
+  if (opts.limitKobo !== undefined || opts.sweepRateBps !== undefined) {
+    await db
+      .update(creditLines)
+      .set({
+        ...(opts.limitKobo !== undefined ? { limitKobo: opts.limitKobo } : {}),
+        ...(opts.sweepRateBps !== undefined ? { sweepRateBps: opts.sweepRateBps } : {}),
+      })
+      .where(eq(creditLines.traderId, trader.id));
+  }
+  const accounts = await (await import('../lib/ledger')).getTraderAccountIds(trader.id);
+  if (opts.loanKobo) await lend({ id: trader.id, accounts }, opts.loanKobo);
+  return { ...trader, id: trader.id, accounts, virtualAccountNumber: trader.virtualAccountNumber! };
 }
