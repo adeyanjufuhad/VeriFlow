@@ -1,1 +1,48 @@
-export const customers = []
+// Illustrative business records only; these do not represent real customers.
+export const customers = [
+  {
+    id: 'cus-1001',
+    name: 'Amina Textiles & Co.',
+    sector: 'Textiles',
+    location: 'Balogun Market, Lagos',
+    verificationStatus: 'Verified records',
+    portfolioCategory: 'Healthy',
+    inflows30d: 12840000,
+  },
+  {
+    id: 'cus-1002',
+    name: 'Northstar Provisions',
+    sector: 'Food distribution',
+    location: 'Onitsha Main Market, Anambra',
+    verificationStatus: 'Verified records',
+    portfolioCategory: 'Healthy',
+    inflows30d: 9630000,
+  },
+  {
+    id: 'cus-1003',
+    name: 'Kola Hardware Supply',
+    sector: 'Building materials',
+    location: 'Dugbe, Ibadan',
+    verificationStatus: 'Under review',
+    portfolioCategory: 'Watch',
+    inflows30d: 7410000,
+  },
+  {
+    id: 'cus-1004',
+    name: 'Green Basket Foods',
+    sector: 'Agriculture',
+    location: 'Ariaria Market, Aba',
+    verificationStatus: 'Verified records',
+    portfolioCategory: 'At Risk',
+    inflows30d: 5280000,
+  },
+  {
+    id: 'cus-1005',
+    name: 'Musa Electronics',
+    sector: 'Electronics',
+    location: 'Computer Village, Lagos',
+    verificationStatus: 'Submitted records',
+    portfolioCategory: 'Watch',
+    inflows30d: 11920000,
+  },
+]

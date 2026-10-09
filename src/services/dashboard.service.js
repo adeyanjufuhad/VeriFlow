@@ -1,0 +1,32 @@
+import {
+  activityByPeriod,
+  dashboardSummary,
+  portfolioHealth,
+} from '../data/dashboard.js'
+import { illustrativeInsight } from '../data/insights.js'
+import { riskAlerts } from '../data/riskAlerts.js'
+import { transactions } from '../data/transactions.js'
+
+export function getDashboardSummary() {
+  return dashboardSummary
+}
+
+export function getActivityForPeriod(period) {
+  return activityByPeriod[period] ?? activityByPeriod['30d']
+}
+
+export function getPortfolioHealth() {
+  return portfolioHealth
+}
+
+export function getRecentTransactions(limit = 6) {
+  return transactions.slice(0, limit)
+}
+
+export function getDashboardRiskAlerts(limit = 4) {
+  return riskAlerts.slice(0, limit)
+}
+
+export function getIllustrativeInsight() {
+  return illustrativeInsight
+}
