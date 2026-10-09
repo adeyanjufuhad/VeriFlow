@@ -1,0 +1,38 @@
+{
+  "name": "veriflow-engine",
+  "private": true,
+  "version": "0.1.0",
+  "description": "VeriFlow financial engine: double-entry ledger, payments, drawdowns",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/migrate.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.4",
+    "next": "16.4.0",
+    "postgres": "3.4.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "drizzle-kit": "0.31.11",
+    "embedded-postgres": "17.10.0-beta.17",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.4.0",
+    "fast-check": "4.10.2",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vitest": "5.0.3"
+  }
+}

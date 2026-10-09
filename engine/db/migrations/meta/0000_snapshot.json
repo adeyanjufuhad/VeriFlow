@@ -1,0 +1,1140 @@
+{
+  "id": "c09348ff-7b36-4aa8-9d11-3d3126bcc294",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.credit_lines": {
+      "name": "credit_lines",
+      "schema": "",
+      "columns": {
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "limit_kobo": {
+          "name": "limit_kobo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "0"
+        },
+        "sweep_rate_bps": {
+          "name": "sweep_rate_bps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1000
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "credit_lines_trader_id_traders_id_fk": {
+          "name": "credit_lines_trader_id_traders_id_fk",
+          "tableFrom": "credit_lines",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "credit_lines_limit_nonneg": {
+          "name": "credit_lines_limit_nonneg",
+          "value": "\"credit_lines\".\"limit_kobo\" >= 0"
+        },
+        "credit_lines_sweep_rate": {
+          "name": "credit_lines_sweep_rate",
+          "value": "\"credit_lines\".\"sweep_rate_bps\" BETWEEN 0 AND 10000"
+        },
+        "credit_lines_status": {
+          "name": "credit_lines_status",
+          "value": "status IN ('active', 'paused')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.debts": {
+      "name": "debts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "debtor_name": {
+          "name": "debtor_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "debtor_phone": {
+          "name": "debtor_phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount_kobo": {
+          "name": "amount_kobo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payment_reference": {
+          "name": "payment_reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "paid_at": {
+          "name": "paid_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "debts_trader_id_traders_id_fk": {
+          "name": "debts_trader_id_traders_id_fk",
+          "tableFrom": "debts",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "debts_payment_reference_unique": {
+          "name": "debts_payment_reference_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "payment_reference"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "debts_status": {
+          "name": "debts_status",
+          "value": "status IN ('open', 'paid', 'cancelled')"
+        },
+        "debts_amount_positive": {
+          "name": "debts_amount_positive",
+          "value": "\"debts\".\"amount_kobo\" > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.drawdowns": {
+      "name": "drawdowns",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "supplier_id": {
+          "name": "supplier_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_kobo": {
+          "name": "amount_kobo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fee_kobo": {
+          "name": "fee_kobo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "0"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending_approval'"
+        },
+        "approval_token_hash": {
+          "name": "approval_token_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_expires_at": {
+          "name": "token_expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "client_request_id": {
+          "name": "client_request_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provider_transfer_reference": {
+          "name": "provider_transfer_reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "failure_reason": {
+          "name": "failure_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "drawdowns_trader_status_idx": {
+          "name": "drawdowns_trader_status_idx",
+          "columns": [
+            {
+              "expression": "trader_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "drawdowns_trader_id_traders_id_fk": {
+          "name": "drawdowns_trader_id_traders_id_fk",
+          "tableFrom": "drawdowns",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "drawdowns_supplier_id_suppliers_id_fk": {
+          "name": "drawdowns_supplier_id_suppliers_id_fk",
+          "tableFrom": "drawdowns",
+          "tableTo": "suppliers",
+          "columnsFrom": [
+            "supplier_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "drawdowns_approval_token_hash_unique": {
+          "name": "drawdowns_approval_token_hash_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "approval_token_hash"
+          ]
+        },
+        "drawdowns_provider_transfer_reference_unique": {
+          "name": "drawdowns_provider_transfer_reference_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "provider_transfer_reference"
+          ]
+        },
+        "drawdowns_trader_client_request": {
+          "name": "drawdowns_trader_client_request",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trader_id",
+            "client_request_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "drawdowns_status": {
+          "name": "drawdowns_status",
+          "value": "status IN ('pending_approval', 'approved', 'paid', 'failed', 'expired', 'cancelled')"
+        },
+        "drawdowns_amount_positive": {
+          "name": "drawdowns_amount_positive",
+          "value": "\"drawdowns\".\"amount_kobo\" > 0"
+        },
+        "drawdowns_fee_nonneg": {
+          "name": "drawdowns_fee_nonneg",
+          "value": "\"drawdowns\".\"fee_kobo\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.journal_entries": {
+      "name": "journal_entries",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "idempotency_key": {
+          "name": "idempotency_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reference": {
+          "name": "reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "journal_entries_trader_idx": {
+          "name": "journal_entries_trader_idx",
+          "columns": [
+            {
+              "expression": "trader_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "journal_entries_trader_id_traders_id_fk": {
+          "name": "journal_entries_trader_id_traders_id_fk",
+          "tableFrom": "journal_entries",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "journal_entries_idempotency_key_unique": {
+          "name": "journal_entries_idempotency_key_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "idempotency_key"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ledger_accounts": {
+      "name": "ledger_accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "owner_type": {
+          "name": "owner_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "owner_id": {
+          "name": "owner_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currency": {
+          "name": "currency",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'NGN'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ledger_accounts_owner_type_uq": {
+          "name": "ledger_accounts_owner_type_uq",
+          "columns": [
+            {
+              "expression": "owner_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"ledger_accounts\".\"owner_id\" IS NOT NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ledger_accounts_system_type_uq": {
+          "name": "ledger_accounts_system_type_uq",
+          "columns": [
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "\"ledger_accounts\".\"owner_type\" = 'system'",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ledger_accounts_owner_id_traders_id_fk": {
+          "name": "ledger_accounts_owner_id_traders_id_fk",
+          "tableFrom": "ledger_accounts",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "owner_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "ledger_accounts_owner_type": {
+          "name": "ledger_accounts_owner_type",
+          "value": "owner_type IN ('trader', 'system')"
+        },
+        "ledger_accounts_type": {
+          "name": "ledger_accounts_type",
+          "value": "type IN ('provider_clearing', 'trader_wallet', 'trader_savings', 'loan_receivable', 'payouts_pending', 'fee_income')"
+        },
+        "ledger_accounts_owner_consistent": {
+          "name": "ledger_accounts_owner_consistent",
+          "value": "(\"ledger_accounts\".\"owner_type\" = 'trader' AND \"ledger_accounts\".\"owner_id\" IS NOT NULL) OR (\"ledger_accounts\".\"owner_type\" = 'system' AND \"ledger_accounts\".\"owner_id\" IS NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.outbox_events": {
+      "name": "outbox_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "outbox_events_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payload": {
+          "name": "payload",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "delivered_at": {
+          "name": "delivered_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "outbox_undelivered_idx": {
+          "name": "outbox_undelivered_idx",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "\"outbox_events\".\"delivered_at\" IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "outbox_events_trader_id_traders_id_fk": {
+          "name": "outbox_events_trader_id_traders_id_fk",
+          "tableFrom": "outbox_events",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.postings": {
+      "name": "postings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "postings_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "entry_id": {
+          "name": "entry_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "direction": {
+          "name": "direction",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_kobo": {
+          "name": "amount_kobo",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "postings_account_idx": {
+          "name": "postings_account_idx",
+          "columns": [
+            {
+              "expression": "account_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "postings_entry_idx": {
+          "name": "postings_entry_idx",
+          "columns": [
+            {
+              "expression": "entry_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "postings_trader_idx": {
+          "name": "postings_trader_idx",
+          "columns": [
+            {
+              "expression": "trader_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "postings_entry_id_journal_entries_id_fk": {
+          "name": "postings_entry_id_journal_entries_id_fk",
+          "tableFrom": "postings",
+          "tableTo": "journal_entries",
+          "columnsFrom": [
+            "entry_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "postings_account_id_ledger_accounts_id_fk": {
+          "name": "postings_account_id_ledger_accounts_id_fk",
+          "tableFrom": "postings",
+          "tableTo": "ledger_accounts",
+          "columnsFrom": [
+            "account_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "postings_trader_id_traders_id_fk": {
+          "name": "postings_trader_id_traders_id_fk",
+          "tableFrom": "postings",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "postings_direction": {
+          "name": "postings_direction",
+          "value": "direction IN ('debit', 'credit')"
+        },
+        "postings_amount_positive": {
+          "name": "postings_amount_positive",
+          "value": "\"postings\".\"amount_kobo\" > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.provider_events": {
+      "name": "provider_events",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "provider": {
+          "name": "provider",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_type": {
+          "name": "event_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "signature_valid": {
+          "name": "signature_valid",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payload_summary": {
+          "name": "payload_summary",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "processed_at": {
+          "name": "processed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error": {
+          "name": "error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "received_at": {
+          "name": "received_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "provider_events_provider_event": {
+          "name": "provider_events_provider_event",
+          "nullsNotDistinct": false,
+          "columns": [
+            "provider",
+            "event_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.suppliers": {
+      "name": "suppliers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "trader_id": {
+          "name": "trader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bank_code": {
+          "name": "bank_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "account_number": {
+          "name": "account_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "account_name": {
+          "name": "account_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provider_recipient_code": {
+          "name": "provider_recipient_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "suppliers_trader_id_traders_id_fk": {
+          "name": "suppliers_trader_id_traders_id_fk",
+          "tableFrom": "suppliers",
+          "tableTo": "traders",
+          "columnsFrom": [
+            "trader_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "suppliers_trader_bank_account": {
+          "name": "suppliers_trader_bank_account",
+          "nullsNotDistinct": false,
+          "columns": [
+            "trader_id",
+            "bank_code",
+            "account_number"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.traders": {
+      "name": "traders",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "business_type": {
+          "name": "business_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "kyc_status": {
+          "name": "kyc_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'mocked'"
+        },
+        "virtual_account_number": {
+          "name": "virtual_account_number",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "virtual_account_bank": {
+          "name": "virtual_account_bank",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "provider_customer_id": {
+          "name": "provider_customer_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pin_hash": {
+          "name": "pin_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pin_failed_attempts": {
+          "name": "pin_failed_attempts",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "pin_locked_until": {
+          "name": "pin_locked_until",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "traders_phone_unique": {
+          "name": "traders_phone_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phone"
+          ]
+        },
+        "traders_virtual_account_number_unique": {
+          "name": "traders_virtual_account_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "virtual_account_number"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "traders_phone_e164": {
+          "name": "traders_phone_e164",
+          "value": "\"traders\".\"phone\" ~ '^\\+[1-9][0-9]{7,14}$'"
+        },
+        "traders_pin_attempts_nonneg": {
+          "name": "traders_pin_attempts_nonneg",
+          "value": "\"traders\".\"pin_failed_attempts\" >= 0"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
