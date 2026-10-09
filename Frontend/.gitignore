@@ -9,8 +9,3 @@ yarn-debug.log*
 pnpm-debug.log*
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-.idea/
-.vscode/*
-!.vscode/extensions.json
