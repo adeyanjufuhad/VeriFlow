@@ -19,29 +19,30 @@ The demo loop: customer pays ₦5,000 → trader's virtual account → split (�
 
 This is a monorepo: each part lives in its own folder, has its own stack, and deploys on its own. The parts talk to each other over HTTP.
 
-| Folder | What it is | Stack | Owner | Status |
+| Role | Person | Folder / area | Stack | Status |
 | --- | --- | --- | --- | --- |
-| `Frontend/` | Bank staff dashboard | Vite, React 19, Tailwind | @0xAlpha01 | On the `bank-dashboard` branch, not yet merged |
-| `hackathon ai/` | WhatsApp bot and AI agents | Python 3.12, FastAPI, Groq / xAI | @osualapromise6-crypto | Source code not pushed yet |
-| `backend/` | Transaction records API | Express, MongoDB | @osualapromise6-crypto | On `main`; to be retired once `engine/` covers it |
-| `engine/` | Financial engine: double-entry ledger, payments, loan repayment split, supplier drawdowns, PIN approval, savings sweep | Next.js (TypeScript), Postgres on Supabase, Drizzle | @adeyanjufuhad | In progress on `feat/financial-engine` |
-| — | Credit limits and fraud rules | TBD | TBD | Not started |
+| Financial engine: database, ledger, payments, loan and repayment logic | Adeyanju Fuhad | `engine/` | Next.js (TypeScript), Postgres on Supabase, Drizzle | In progress on `feat/financial-engine` |
+| Product + WhatsApp: bot, commands, conversation flow | Amoo AbdulMueez | WhatsApp / orchestrator (folder to be agreed) | Next.js | Not pushed yet |
+| AI: bookkeeping, voice understanding, credit analysis, fraud | Osuala Promise | `hackathon ai/` | Python 3.12, FastAPI, Groq / xAI | Source code not pushed yet |
+| Bank dashboard: UI and real-time data | Satoye Olamide (Pulse dev) | `Frontend/` | Vite, React 19, Tailwind | On the `bank-dashboard` branch, not yet merged |
+| Transaction records API (early prototype) | Osuala Promise | `backend/` | Express, MongoDB | On `main`; to be retired once `engine/` covers it |
 
 ## How the parts connect
 
 ```mermaid
 flowchart LR
-  Customer -->|pays| Provider[Payment provider<br/>Paystack test mode]
+  Customer -->|pays| Provider[Payment provider<br/>Paystack / Flutterwave sandbox]
   Provider -->|webhook| Engine[engine/<br/>ledger + payments]
-  Engine -->|outbox events| AI[AI service<br/>WhatsApp bot]
-  AI -->|request drawdown,<br/>read balances| Engine
+  Engine -->|outbox events| Bot[WhatsApp bot +<br/>orchestrator]
+  Bot <-->|voice notes, credit,<br/>fraud checks| AI[AI service<br/>Python]
+  Bot -->|request drawdown,<br/>read balances| Engine
   Trader -->|PIN on web page| Engine
   Engine -->|pays supplier| Provider
   Dashboard[Frontend/<br/>bank dashboard] -->|read API / live updates| Engine
 ```
 
 - The **engine** is the only part that moves money or writes to the ledger.
-- The **AI service** can read balances and *request* a drawdown, but it can never approve one. Approval needs the trader's PIN on the web page.
+- The **WhatsApp bot and AI agents** can read balances and *request* a drawdown, but can never approve one. Approval needs the trader's PIN on the web page.
 - The **dashboard** reads from the engine's API (and Supabase Realtime for live updates).
 
 Full API contract: `engine/docs/money-engine.md` (coming with the engine).
